@@ -5,6 +5,7 @@ IfdalTools memudahkan orang lain untuk membantu hal hal sederhana seperti menghi
 Website alat bantu edukatif yang dirancang untuk memudahkan perhitungan harian dan dan tentunya simpel bro.
 
 3. Fitur Utama guys:
+
 • Smart JKW: Menghitung Jarak, Kecepatan, dan Waktu dengan konversi otomatis (Fisika).
 
 • Kalkulator BMI: Analisis berat badan ideal beserta saran target kesehatan.
