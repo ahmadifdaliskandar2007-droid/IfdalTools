@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IfdalTools - Education Final</title>
+    <style>
+        :root {
+            --bg: #0f172a; --card: #1e293b; --primary: #38bdf8;
+            --accent: #a855f7; --success: #22c55e; --danger: #f43f5e;
+            --warning: #f59e0b; --text: #f8fafc;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif; background-color: var(--bg);
+            color: var(--text); margin: 0; display: flex;
+            flex-direction: column; align-items: center; min-height: 100vh;
+        }
+
+        header {
+            width: 100%; padding: 15px; text-align: center;
+            background: var(--card); box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+            position: sticky; top: 0; z-index: 100;
+        }
+
+        .container { width: 95%; max-width: 480px; padding: 20px 0; }
+        .page { display: none; animation: slideUp 0.3s ease-out; }
+        .active { display: block; }
+
+        .card {
+            background: var(--card); padding: 20px; border-radius: 20px;
+            border: 1px solid #334155; text-align: center; margin-bottom: 20px;
+        }
+
+        /* BOX PENJELASAN PANJANG */
+        .edu-box {
+            font-size: 13px; color: #cbd5e1; text-align: left;
+            background: #0f172a; padding: 18px; border-radius: 12px;
+            margin-bottom: 20px; border-left: 4px solid var(--primary);
+            line-height: 1.6;
+        }
+
+        .edu-box h4 { margin: 0 0 10px 0; color: var(--primary); display: flex; align-items: center; gap: 8px; }
+        .edu-box b { color: var(--text); }
+        .edu-box hr { border: 0; border-top: 1px solid #334155; margin: 12px 0; }
+
+        input, select {
+            width: 100%; padding: 14px; margin: 10px 0;
+            border-radius: 12px; border: 1px solid #334155;
+            background: #0f172a; color: white; box-sizing: border-box;
+            font-size: 16px; outline: none;
+        }
+
+        button {
+            width: 100%; padding: 14px; border: none;
+            border-radius: 12px; font-weight: bold; cursor: pointer;
+            margin-top: 10px; transition: 0.2s; font-size: 15px;
+        }
+
+        button:active { transform: scale(0.96); }
+
+        .btn-blue { background: var(--primary); color: #0f172a; }
+        .btn-orange { background: var(--warning); color: white; }
+        .btn-green { background: var(--success); color: white; }
+        .btn-purple { background: var(--accent); color: white; }
+        .btn-red { background: var(--danger); color: white; }
+        .btn-back { background: transparent; border: 1px solid #475569; color: #94a3b8; margin-top: 20px; }
+
+        .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        
+        .result-box {
+            background: #0f172a; padding: 15px; border-radius: 12px;
+            margin-top: 15px; text-align: left; display: none; border-right: 4px solid transparent;
+        }
+
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+<header><h2 onclick="showPage('home')" style="cursor:pointer">🛠️ IfdalTools Pro</h2></header>
+
+<div class="container">
+
+    <div id="home" class="page active">
+        <div class="card">
+            <h3 style="margin-top:0">Pilih Alat & Pelajari,that simple cuyy</h3>
+            <div class="menu-grid">
+                <button class="btn-green" onclick="showPage('calc')">➕ Kalkulator</button>
+                <button class="btn-purple" onclick="showPage('fisika')">🚗 Smart JKW</button>
+                <button class="btn-blue" onclick="showPage('diskon')">🏷️ Cek Diskon</button>
+                <button class="btn-orange" onclick="showPage('pajak')">🧾 Hitung PPN</button>
+                <button class="btn-blue" onclick="showPage('bmi')" style="grid-column: span 2;">⚖️ Cek Kesehatan (BMI)</button>
+            </div>
+            <p style="font-size: 11px; color: #475569; margin-top: 25px;">v28 Build | Logic by Ifdal</p>
+        </div>
+    </div>
+
+    <div id="fisika" class="page">
+        <div class="card">
+            <h3>🚗 Smart JKW (Fisika)</h3>
+            <div class="edu-box">
+                <h4>📖 Penjelasan Teori</h4>
+                <b>Keterangan:</b> JKW adalah metode menghitung hubungan antara Jarak (J), Kecepatan (K), dan Waktu (W) yang merupakan dasar ilmu Fisika Gerak.
+                <hr>
+                <b>Manfaat:</b> Dengan alat ini, kamu bisa memprediksi jam berapa kamu akan sampai ke sekolah jika kecepatan motor stabil, atau menghitung berapa km jarak rumahmu ke lokasi tujuan.
+                <hr>
+                <b>Rumus Dasar:</b><br>
+                • Jarak = K × W<br>
+                • Kecepatan = J / W<br>
+                • Waktu = J / K
+            </div>
+            <select id="modeJKW" onchange="updateJKWUI()">
+                <option value="jarak">Cari Jarak (S)</option>
+                <option value="kecepatan">Cari Kecepatan (V)</option>
+                <option value="waktu">Cari Waktu (T)</option>
+            </select>
+            <div id="inputJKW"></div>
+            <button class="btn-purple" onclick="hitungJKW()">Hitung Hasil</button>
+            <div id="resJKW" class="result-box" style="border-left: 4px solid var(--accent);"><span id="txtJKW"></span></div>
+            <button class="btn-back" onclick="showPage('home')">← Kembali ke Menu</button>
+        </div>
+    </div>
+
+    <div id="pajak" class="page">
+        <div class="card">
+            <h3>🧾 Hitung Pajak (PPN)</h3>
+            <div class="edu-box">
+                <h4>📖 Penjelasan Teori</h4>
+                <b>Keterangan:</b> PPN (Pajak Pertambahan Nilai) adalah pajak konsumsi yang dikenakan pemerintah Indonesia pada hampir setiap barang dan jasa yang kita beli.
+                <hr>
+                <b>Manfaat:</b> Membantu kamu menyiapkan uang pas sebelum membayar di kasir, karena seringkali harga di brosur/menu belum termasuk pajak 11%.
+                <hr>
+                <b>Logika:</b> Harga Total = Harga Barang + (Harga Barang × Tarif Pajak).
+            </div>
+            <input type="text" id="hargaP" placeholder="Harga Barang (Rp)" oninput="inputRibuan(this)">
+            <input type="number" id="persenP" value="11">
+            <button class="btn-orange" onclick="hitungPPN()">Total yang Harus Dibayar</button>
+            <div id="resPajak" class="result-box" style="border-left: 4px solid var(--warning);"><span id="txtPajak"></span></div>
+            <button class="btn-back" onclick="showPage('home')">← Kembali ke Menu</button>
+        </div>
+    </div>
+
+    <div id="bmi" class="page">
+        <div class="card">
+            <h3>⚖️ Analisis Kesehatan (BMI)</h3>
+            <div class="edu-box">
+                <h4>📖 Penjelasan Teori</h4>
+                <b>Keterangan:</b> BMI (Body Mass Index) adalah perbandingan berat badan dengan tinggi badan kuadrat. Ini adalah indikator kesehatan gizi paling populer.
+                <hr>
+                <b>Manfaat:</b> Mengetahui apakah kamu berada di zona berat ideal, kurang gizi, atau kelebihan berat agar bisa mengatur pola makan dengan lebih baik.
+                <hr>
+                <b>Target Ideal:</b> Sistem akan menghitung rentang berat terbaikmu (BMI 18.5 - 25.0).
+            </div>
+            <input type="number" id="berat" placeholder="Berat Badan (kg)">
+            <input type="number" id="tinggi" placeholder="Tinggi Badan (cm)">
+            <button class="btn-blue" onclick="hitungBMI()">Analisis Sekarang</button>
+            <div id="resBMI" class="result-box">
+                <span id="txtBMI"></span>
+                <hr style="border: 0; border-top: 1px solid #334155; margin: 12px 0;">
+                <span id="targetBMI" style="font-size: 14px; color: #94a3b8;"></span>
+            </div>
+            <button class="btn-back" onclick="showPage('home')">← Kembali ke Menu</button>
+        </div>
+    </div>
+
+    <div id="calc" class="page">
+        <div class="card">
+            <h3>➕ Kalkulator Digital</h3>
+            <input type="text" id="displayCalc" readonly placeholder="0" style="text-align:right">
+            <div class="menu-grid" style="grid-template-columns: repeat(4, 1fr);">
+                <button class="btn-blue" onclick="appendCalc('7')">7</button><button class="btn-blue" onclick="appendCalc('8')">8</button><button class="btn-blue" onclick="appendCalc('9')">9</button><button class="btn-red" onclick="appendCalc('/')">/</button>
+                <button class="btn-blue" onclick="appendCalc('4')">4</button><button class="btn-blue" onclick="appendCalc('5')">5</button><button class="btn-blue" onclick="appendCalc('6')">6</button><button class="btn-red" onclick="appendCalc('*')">x</button>
+                <button class="btn-blue" onclick="appendCalc('1')">1</button><button class="btn-blue" onclick="appendCalc('2')">2</button><button class="btn-blue" onclick="appendCalc('3')">3</button><button class="btn-red" onclick="appendCalc('-')">-</button>
+                <button class="btn-red" onclick="clearCalc()">C</button><button class="btn-blue" onclick="appendCalc('0')">0</button><button class="btn-green" onclick="resultCalc()" style="grid-column: span 2;">=</button>
+            </div>
+            <button class="btn-back" onclick="showPage('home')">← Kembali</button>
+        </div>
+    </div>
+
+    <div id="diskon" class="page">
+        <div class="card">
+            <h3>🏷️ Perhitungan Diskon</h3>
+            <input type="text" id="hargaD" placeholder="Harga Asli" oninput="inputRibuan(this)">
+            <input type="number" id="persenD" placeholder="Diskon (%)">
+            <button class="btn-blue" onclick="hitungDiskon()">Lihat Harga Akhir</button>
+            <div id="resDiskon" class="result-box"><span id="txtDiskon"></span></div>
+            <button class="btn-back" onclick="showPage('home')">← Kembali</button>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    // FUNGSI NAVIGASI
+    function showPage(id) {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        if(id === 'fisika') updateJKWUI();
+    }
+
+    // FORMATTING RIBUAN
+    function formatAngka(n) { return n.toString().replace(/[^0-9]/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, "."); }
+    function unformatAngka(s) { return parseFloat(s.toString().replace(/\./g, "")) || 0; }
+    function inputRibuan(obj) { obj.value = formatAngka(obj.value); }
+
+    // LOGIKA SMART JKW
+    function updateJKWUI() {
+        const m = document.getElementById('modeJKW').value;
+        const a = document.getElementById('inputJKW');
+        if(m === 'jarak') a.innerHTML = '<input type="number" id="v_in" placeholder="Kecepatan (km/jam)"><input type="text" id="t_in" placeholder="Waktu (cth: 2 atau 45 menit)">';
+        else if(m === 'kecepatan') a.innerHTML = '<input type="number" id="s_in" placeholder="Jarak (km)"><input type="text" id="t_in" placeholder="Waktu (cth: 2 atau 45 menit)">';
+        else a.innerHTML = '<input type="number" id="s_in" placeholder="Jarak (km)"><input type="number" id="v_in" placeholder="Kecepatan (km/jam)">';
+    }
+
+    function hitungJKW() {
+        const m = document.getElementById('modeJKW').value;
+        try {
+            let res = "";
+            if(m === 'jarak') {
+                let v = parseFloat(document.getElementById('v_in').value);
+                let t_s = document.getElementById('t_in').value;
+                let t = t_s.toLowerCase().includes('menit') ? parseFloat(t_s)/60 : parseFloat(t_s);
+                res = formatAngka(Math.round(v * t)) + " km";
+            } else if(m === 'kecepatan') {
+                let s = parseFloat(document.getElementById('s_in').value);
+                let t_s = document.getElementById('t_in').value;
+                let t = t_s.toLowerCase().includes('menit') ? parseFloat(t_s)/60 : parseFloat(t_s);
+                res = formatAngka(Math.round(s / t)) + " km/jam";
+            } else {
+                let s = parseFloat(document.getElementById('s_in').value);
+                let v = parseFloat(document.getElementById('v_in').value);
+                res = Math.round((s / v) * 60) + " menit";
+            }
+            document.getElementById('txtJKW').innerHTML = `💡 Hasil Kalkulasi: <b>${res}</b>`;
+            document.getElementById('resJKW').style.display = 'block';
+        } catch(e) { alert("Pastikan semua kolom sudah diisi angka!"); }
+    }
+
+    // LOGIKA BMI (FIXED & IMPROVED)
+    function hitungBMI() {
+        const bb = parseFloat(document.getElementById('berat').value);
+        const tbCm = parseFloat(document.getElementById('tinggi').value);
+        if (bb > 0 && tbCm > 0) {
+            const tbM = tbCm / 100;
+            const bmi = bb / (tbM * tbM);
+            const minI = (18.5 * (tbM * tbM)).toFixed(1);
+            const maxI = (25.0 * (tbM * tbM)).toFixed(1);
+            let ket = "", warna = "", info = "";
+
+            if (bmi < 18.5) { 
+                ket = "Kurus"; warna = "#38bdf8"; 
+                info = `Analisis: Kamu perlu menambah sekitar <b>${(minI - bb).toFixed(1)} kg</b> lagi untuk berat ideal.`;
+            } else if (bmi < 25.0) { 
+                ket = "Normal (Ideal)"; warna = "#22c55e"; 
+                info = `Analisis: Tubuhmu sudah ideal. Jaga di rentang ${minI} kg - ${maxI} kg.`;
+            } else { 
+                ket = "Kelebihan Berat"; warna = "#f43f5e"; 
+                info = `Analisis: Kamu sebaiknya menurunkan <b>${(bb - maxI).toFixed(1)} kg</b> agar kembali ideal.`;
+            }
+            
+            document.getElementById('resBMI').style.display = 'block';
+            document.getElementById('resBMI').style.borderLeft = `4px solid ${warna}`;
+            document.getElementById('txtBMI').innerHTML = `Skor BMI: <b>${bmi.toFixed(1)}</b><br>Kategori: <b style="color:${warna}">${ket}</b>`;
+            document.getElementById('targetBMI').innerHTML = info;
+        } else { alert("Isi BB dan TB dulu!"); }
+    }
+
+    // LOGIKA PPN & DISKON
+    function hitungPPN() {
+        const h = unformatAngka(document.getElementById('hargaP').value);
+        const p = parseFloat(document.getElementById('persenP').value);
+        document.getElementById('txtPajak').innerHTML = `Total Harga Akhir: <b>Rp ${formatAngka(Math.round(h + (h*p/100)))}</b>`;
+        document.getElementById('resPajak').style.display = 'block';
+    }
+    function hitungDiskon() {
+        const h = unformatAngka(document.getElementById('hargaD').value);
+        const p = parseFloat(document.getElementById('persenD').value);
+        document.getElementById('txtDiskon').innerHTML = `Harga Setelah Diskon: <b>Rp ${formatAngka(Math.round(h - (h*p/100)))}</b>`;
+        document.getElementById('resDiskon').style.display = 'block';
+    }
+
+    // LOGIKA KALKULATOR
+    let formula = "";
+    function appendCalc(v) {
+        formula += v;
+        if (!isNaN(v)) {
+            let parts = formula.split(/[\+\-\*\/]/);
+            document.getElementById('displayCalc').value = formatAngka(parts[parts.length - 1]);
+        } else { document.getElementById('displayCalc').value = v; }
+    }
+    function clearCalc() { formula = ""; document.getElementById('displayCalc').value = "0"; }
+    function resultCalc() {
+        try {
+            let res = eval(formula);
+            document.getElementById('displayCalc').value = formatAngka(Math.round(res));
+            formula = res.toString();
+        } catch(e) { clearCalc(); }
+    }
+</script>
+</body>
+</html>
